@@ -16,6 +16,10 @@ const CHARACTERS = [
 ];
 
 export class Play extends Phaser.Scene {
+    /**
+     * Loads the necessary assets for the game.
+     * @method preload
+     */
     preload() {
         this.load.image('block', 'assets/input/block.png');
         this.load.image('rub', 'assets/input/rub.png');
@@ -23,15 +27,31 @@ export class Play extends Phaser.Scene {
         this.load.bitmapFont('arcade', 'assets/fonts/bitmap/arcade.png', 'assets/fonts/bitmap/arcade.xml');
     }
 
+    /**
+     * Initializes the game scene.
+     * @method create
+     */
     create() {
+        /**
+         * Initializes the cursor and name variables.
+         * @member {Object} cursor - Represents the cursor's position on the game board.
+         * @member {string} name - Represents the player's name.
+         */
         this.cursor = { x: 0, y: 0 };
         this.name = '';
 
+        /**
+         * Sets up the game board, keyboard input, and pointer input.
+         */
         this.setupGameBoard();
         this.setupKeyboardInput();
         this.setupPointerInput();
     }
 
+    /**
+     * Sets up the game board, keyboard input, and pointer input.
+     * @memberof Play
+     */
     setupGameBoard() {
         this.inputText = this.add.bitmapText(130, 50, 'arcade', 'ABCDEFGHIJ\n\nKLMNOPQRST\n\nUVWXYZ.-').setLetterSpacing(20);
         this.inputText.setInteractive();
@@ -84,6 +104,7 @@ export class Play extends Phaser.Scene {
     handleInput() {
         if (this.cursor.x === 9 && this.cursor.y === 2 && this.name.length > 0) {
             // Submit
+            console.log(this.name);
         } else if (this.cursor.x === 8 && this.cursor.y === 2 && this.name.length > 0) {
             // Rub
             this.name = this.name.substr(0, this.name.length - 1);
@@ -95,7 +116,16 @@ export class Play extends Phaser.Scene {
         }
     }
 
+    /**
+     * Sets up pointer input for the game board.
+     */
     setupPointerInput() {
+        /**
+         * Adds a listener for pointer move events on the game board.
+         * @param {Phaser.Input.Pointer} pointer - The pointer that triggered the event.
+         * @param {number} x - The x coordinate of the pointer, relative to the game board.
+         * @param {number} y - The y coordinate of the pointer, relative to the game board.
+         */
         this.inputText.on('pointermove', (pointer, x, y) => {
             const cx = Phaser.Math.Snap.Floor(x, 52, 0, true);
             const cy = Phaser.Math.Snap.Floor(y, 64, 0, true);
@@ -103,6 +133,12 @@ export class Play extends Phaser.Scene {
             this.moveCursor(cx - this.cursor.x, cy - this.cursor.y);
         });
 
+        /**
+         * Adds a listener for pointer up events on the game board.
+         * @param {Phaser.Input.Pointer} pointer - The pointer that triggered the event.
+         * @param {number} x - The x coordinate of the pointer, relative to the game board.
+         * @param {number} y - The y coordinate of the pointer, relative to the game board.
+         */
         this.inputText.on('pointerup', (pointer, x, y) => {
             const cx = Phaser.Math.Snap.Floor(x, 52, 0, true);
             const cy = Phaser.Math.Snap.Floor(y, 64, 0, true);
