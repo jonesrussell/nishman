@@ -11,7 +11,7 @@ export default class Player extends Actor {
 
     this.anims.create({
       key: 'walk',
-      frames: this.anims.generateFrameNumbers('brawler', { frames: [0, 1, 2, 3] }),
+      frames: this.anims.generateFrameNumbers('player', { frames: [0, 1, 2, 3] }),
       frameRate: 8,
       repeat: -1
     });
@@ -27,7 +27,6 @@ export default class Player extends Actor {
       this.scene.physics.moveToObject(this, this.target, 200);
     });
 
-    this.setScale(0.1);
     this.play('walk');
   }
 

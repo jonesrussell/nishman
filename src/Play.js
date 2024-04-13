@@ -1,14 +1,17 @@
 import Phaser from 'phaser';
 import Player from './classes/player';
+import Actor from './classes/actor';
 
 export class Play extends Phaser.Scene {
     player;
+    elder;
 
     preload() {
         this.load.tilemapCSV('map', 'assets/tilemaps/csv/bg.csv');
         this.load.image('tiles', 'assets/tilemaps/tiles/seasonal_sample_autumn.png');
 
-        this.load.spritesheet('brawler', 'assets/sprites/gen-char.png', { frameWidth: 256, frameHeight: 256 });
+        this.load.spritesheet('player', 'assets/sprites/gen-char.png', { frameWidth: 256, frameHeight: 256 });
+        this.load.spritesheet('elder', 'assets/sprites/gen-char.png', { frameWidth: 256, frameHeight: 256 });
     }
 
     create() {
@@ -19,6 +22,10 @@ export class Play extends Phaser.Scene {
         layer.skipCull = true;
 
         this.player = new Player(this, 100, 100);
+        this.player.setScale(0.1);
+
+        this.elder = new Actor(this, 650, 500, 'elder');
+        this.elder.setScale(0.1);
 
         // Initialize the levels with their respective themes
         let cultural_themes = {
@@ -66,6 +73,13 @@ export class Play extends Phaser.Scene {
 
     update(time, delta) {
         this.player.update();
+
+        // Check if player is close enough to Elder to start dialogue
+        const distanceToElder = Phaser.Math.Distance.BetweenPoints(this.player, this.elder);
+        console.log(distanceToElder);
+        if (distanceToElder < 50) { // Example distance threshold
+            this.elder.startDialogue();
+        }
     }
 
     displayIntroductionAndStory(level) {
