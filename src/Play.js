@@ -1,5 +1,20 @@
 import Phaser from 'phaser';
 
+const KEY_CODES = {
+    LEFT: 37,
+    RIGHT: 39,
+    UP: 38,
+    DOWN: 40,
+    ENTER: 13,
+    SPACE: 32
+};
+
+const CHARACTERS = [
+    ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
+    ['K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T'],
+    ['U', 'V', 'W', 'X', 'Y', 'Z', '.', '-', '<', '>']
+];
+
 export class Play extends Phaser.Scene {
     preload() {
         this.load.image('block', 'assets/input/block.png');
@@ -9,127 +24,91 @@ export class Play extends Phaser.Scene {
     }
 
     create() {
-        const chars = [
-            ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
-            ['K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T'],
-            ['U', 'V', 'W', 'X', 'Y', 'Z', '.', '-', '<', '>']
-        ];
-        const cursor = { x: 0, y: 0 };
-        let name = '';
+        this.cursor = { x: 0, y: 0 };
+        this.name = '';
 
-        const input = this.add.bitmapText(130, 50, 'arcade', 'ABCDEFGHIJ\n\nKLMNOPQRST\n\nUVWXYZ.-').setLetterSpacing(20);
+        this.setupGameBoard();
+        this.setupKeyboardInput();
+        this.setupPointerInput();
+    }
 
-        input.setInteractive();
+    setupGameBoard() {
+        this.inputText = this.add.bitmapText(130, 50, 'arcade', 'ABCDEFGHIJ\n\nKLMNOPQRST\n\nUVWXYZ.-').setLetterSpacing(20);
+        this.inputText.setInteractive();
 
-        const rub = this.add.image(input.x + 430, input.y + 148, 'rub');
-        const end = this.add.image(input.x + 482, input.y + 148, 'end');
+        this.rub = this.add.image(this.inputText.x + 430, this.inputText.y + 148, 'rub');
+        this.end = this.add.image(this.inputText.x + 482, this.inputText.y + 148, 'end');
 
-        const block = this.add.image(input.x - 10, input.y - 2, 'block').setOrigin(0);
+        this.block = this.add.image(this.inputText.x - 10, this.inputText.y - 2, 'block').setOrigin(0);
 
-        const legend = this.add.bitmapText(80, 260, 'arcade', 'RANK  SCORE   NAME').setTint(0xff00ff);
-
+        this.legend = this.add.bitmapText(80, 260, 'arcade', 'RANK  SCORE   NAME').setTint(0xff00ff);
         this.add.bitmapText(80, 310, 'arcade', '1ST   50000    ').setTint(0xff0000);
-        this.add.bitmapText(80, 360, 'arcade', '2ND   40000    ICE').setTint(0xff8200);
-        this.add.bitmapText(80, 410, 'arcade', '3RD   30000    GOS').setTint(0xffff00);
-        this.add.bitmapText(80, 460, 'arcade', '4TH   20000    HRE').setTint(0x00ff00);
-        this.add.bitmapText(80, 510, 'arcade', '5TH   10000    ETE').setTint(0x00bfff);
 
-        const playerText = this.add.bitmapText(560, 310, 'arcade', name).setTint(0xff0000);
+        this.playerText = this.add.bitmapText(560, 310, 'arcade', this.name).setTint(0xff0000);
+    }
 
+    setupKeyboardInput() {
         this.input.keyboard.on('keyup', event => {
+            switch (event.keyCode) {
+                case KEY_CODES.LEFT:
+                    this.moveCursor(-1, 0);
+                    break;
+                case KEY_CODES.RIGHT:
+                    this.moveCursor(1, 0);
+                    break;
+                case KEY_CODES.UP:
+                    this.moveCursor(0, -1);
+                    break;
+                case KEY_CODES.DOWN:
+                    this.moveCursor(0, 1);
+                    break;
+                case KEY_CODES.ENTER:
+                case KEY_CODES.SPACE:
+                    this.handleInput();
+                    break;
+            }
+        });
+    }
 
-            if (event.keyCode === 37) {
-                //  left
-                if (cursor.x > 0) {
-                    cursor.x--;
-                    block.x -= 52;
-                }
-            }
-            else if (event.keyCode === 39) {
-                //  right
-                if (cursor.x < 9) {
-                    cursor.x++;
-                    block.x += 52;
-                }
-            }
-            else if (event.keyCode === 38) {
-                //  up
-                if (cursor.y > 0) {
-                    cursor.y--;
-                    block.y -= 64;
-                }
-            }
-            else if (event.keyCode === 40) {
-                //  down
-                if (cursor.y < 2) {
-                    cursor.y++;
-                    block.y += 64;
-                }
-            }
-            else if (event.keyCode === 13 || event.keyCode === 32) {
-                //  Enter or Space
-                if (cursor.x === 9 && cursor.y === 2 && name.length > 0) {
-                    //  Submit
-                }
-                else if (cursor.x === 8 && cursor.y === 2 && name.length > 0) {
-                    //  Rub
-                    name = name.substr(0, name.length - 1);
+    moveCursor(dx, dy) {
+        if (this.cursor.x + dx >= 0 && this.cursor.x + dx < 10) {
+            this.cursor.x += dx;
+            this.block.x += 52 * dx;
+        }
+        if (this.cursor.y + dy >= 0 && this.cursor.y + dy < 3) {
+            this.cursor.y += dy;
+            this.block.y += 64 * dy;
+        }
+    }
 
-                    playerText.text = name;
-                }
-                else if (name.length < 3) {
-                    //  Add
-                    name = name.concat(chars[cursor.y][cursor.x]);
+    handleInput() {
+        if (this.cursor.x === 9 && this.cursor.y === 2 && this.name.length > 0) {
+            // Submit
+        } else if (this.cursor.x === 8 && this.cursor.y === 2 && this.name.length > 0) {
+            // Rub
+            this.name = this.name.substr(0, this.name.length - 1);
+            this.playerText.text = this.name;
+        } else if (this.name.length < 3) {
+            // Add
+            this.name = this.name.concat(CHARACTERS[this.cursor.y][this.cursor.x]);
+            this.playerText.text = this.name;
+        }
+    }
 
-                    playerText.text = name;
-                }
-            }
+    setupPointerInput() {
+        this.inputText.on('pointermove', (pointer, x, y) => {
+            const cx = Phaser.Math.Snap.Floor(x, 52, 0, true);
+            const cy = Phaser.Math.Snap.Floor(y, 64, 0, true);
 
+            this.moveCursor(cx - this.cursor.x, cy - this.cursor.y);
         });
 
-        input.on('pointermove', (pointer, x, y) => {
-
+        this.inputText.on('pointerup', (pointer, x, y) => {
             const cx = Phaser.Math.Snap.Floor(x, 52, 0, true);
             const cy = Phaser.Math.Snap.Floor(y, 64, 0, true);
-            const char = chars[cy][cx];
 
-            cursor.x = cx;
-            cursor.y = cy;
-
-            block.x = input.x - 10 + (cx * 52);
-            block.y = input.y - 2 + (cy * 64);
-
-        }, this);
-
-        input.on('pointerup', (pointer, x, y) => {
-
-            const cx = Phaser.Math.Snap.Floor(x, 52, 0, true);
-            const cy = Phaser.Math.Snap.Floor(y, 64, 0, true);
-            const char = chars[cy][cx];
-
-            cursor.x = cx;
-            cursor.y = cy;
-
-            block.x = input.x - 10 + (cx * 52);
-            block.y = input.y - 2 + (cy * 64);
-
-            if (char === '<' && name.length > 0) {
-                //  Rub
-                name = name.substr(0, name.length - 1);
-
-                playerText.text = name;
-            }
-            else if (char === '>' && name.length > 0) {
-                //  Submit
-            }
-            else if (name.length < 3) {
-                //  Add
-                name = name.concat(char);
-
-                playerText.text = name;
-            }
-
-        }, this);
-
+            this.moveCursor(cx - this.cursor.x, cy - this.cursor.y);
+            this.handleInput();
+        });
     }
 }
