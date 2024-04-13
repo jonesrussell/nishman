@@ -20,13 +20,6 @@ export class Play extends Phaser.Scene {
 
         this.player = new Player(this, 100, 100);
 
-        const help = this.add.text(16, 16, 'Arrow keys to scroll', {
-            fontSize: '18px',
-            fill: '#ffffff'
-        });
-
-        help.setScrollFactor(0);
-
         // Initialize the levels with their respective themes
         let cultural_themes = {
             'Seasons': ['Spring', 'Summer', 'Fall', 'Winter'],

@@ -3,11 +3,13 @@ import Actor from './actor';
 export default class Player extends Actor {
   constructor(scene, x, y) {
     super(scene, x, y, 'player');
+
     // KEYS
     this.keyW = this.scene.input.keyboard.addKey('W');
     this.keyA = this.scene.input.keyboard.addKey('A');
     this.keyS = this.scene.input.keyboard.addKey('S');
     this.keyD = this.scene.input.keyboard.addKey('D');
+
     // PHYSICS
     this.getBody().setSize(30, 30);
     this.getBody().setOffset(8, 0);
