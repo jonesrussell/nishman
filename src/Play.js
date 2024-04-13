@@ -1,5 +1,15 @@
 import Phaser from 'phaser';
 
+/**
+ * Constants representing keyboard key codes.
+ * @type {Object}
+ * @property {number} LEFT - The key code for the left arrow key.
+ * @property {number} RIGHT - The key code for the right arrow key.
+ * @property {number} UP - The key code for the up arrow key.
+ * @property {number} DOWN - The key code for the down arrow key.
+ * @property {number} ENTER - The key code for the enter key.
+ * @property {number} SPACE - The key code for the space key.
+ */
 const KEY_CODES = {
     LEFT: 37,
     RIGHT: 39,
@@ -9,6 +19,13 @@ const KEY_CODES = {
     SPACE: 32
 };
 
+/**
+ * An array of characters that can be added to the player's name.
+ * @type {Array<string>}
+ * @property {string[]} [0] - The first row of characters.
+ * @property {string[]} [1] - The second row of characters.
+ * @property {string[]} [2] - The third row of characters.
+ */
 const CHARACTERS = [
     ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
     ['K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T'],
@@ -16,6 +33,7 @@ const CHARACTERS = [
 ];
 
 export class Play extends Phaser.Scene {
+
     /**
      * Loads the necessary assets for the game.
      * @method preload
@@ -67,6 +85,10 @@ export class Play extends Phaser.Scene {
         this.playerText = this.add.bitmapText(560, 310, 'arcade', this.name).setTint(0xff0000);
     }
 
+    /**
+     * Sets up the keyboard input.
+     * @memberof Play
+     */
     setupKeyboardInput() {
         this.input.keyboard.on('keyup', event => {
             switch (event.keyCode) {
@@ -90,6 +112,12 @@ export class Play extends Phaser.Scene {
         });
     }
 
+    /**
+     * Moves the cursor on the game board.
+     * @memberof Play
+     * @param {number} dx - The x-coordinate change for the cursor.
+     * @param {number} dy - The y-coordinate change for the cursor.
+     */
     moveCursor(dx, dy) {
         if (this.cursor.x + dx >= 0 && this.cursor.x + dx < 10) {
             this.cursor.x += dx;
@@ -101,6 +129,10 @@ export class Play extends Phaser.Scene {
         }
     }
 
+    /**
+     * Handles the input events for the game.
+     * @memberof Play
+     */
     handleInput() {
         if (this.cursor.x === 9 && this.cursor.y === 2 && this.name.length > 0) {
             // Submit
@@ -118,6 +150,7 @@ export class Play extends Phaser.Scene {
 
     /**
      * Sets up pointer input for the game board.
+     * @memberof Play
      */
     setupPointerInput() {
         /**
