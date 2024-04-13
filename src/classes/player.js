@@ -5,12 +5,6 @@ export default class Player extends Actor {
   constructor(scene, x, y) {
     super(scene, x, y, 'player');
 
-    // KEYS
-    this.keyW = this.scene.input.keyboard.addKey('W');
-    this.keyA = this.scene.input.keyboard.addKey('A');
-    this.keyS = this.scene.input.keyboard.addKey('S');
-    this.keyD = this.scene.input.keyboard.addKey('D');
-
     // PHYSICS
     this.getBody().setSize(30, 30);
     this.getBody().setOffset(8, 0);
@@ -22,29 +16,31 @@ export default class Player extends Actor {
       repeat: -1
     });
 
-    const keys = ['walk'];
+    this.target = new Phaser.Math.Vector2();
+    this.distanceText = this.scene.add.text(10, 10, 'Click to set target', { fill: '#00ff00' });
+
+    this.scene.input.on('pointerdown', (pointer) => {
+      this.target.x = pointer.x;
+      this.target.y = pointer.y;
+
+      // Move at 200 px/s:
+      this.scene.physics.moveToObject(this, this.target, 200);
+    });
 
     this.setScale(0.1);
     this.play('walk');
   }
 
   update() {
-    this.getBody().setVelocity(0);
-    if (this.keyW.isDown) {
-      this.body.velocity.y = -110;
-    }
-    if (this.keyA.isDown) {
-      this.body.velocity.x = -110;
-      this.checkFlip();
-      this.getBody().setOffset(15, 15); // Adjusted offset
-    }
-    if (this.keyS.isDown) {
-      this.body.velocity.y = 110;
-    }
-    if (this.keyD.isDown) {
-      this.body.velocity.x = 110;
-      this.checkFlip();
-      this.getBody().setOffset(15, 15); // Adjusted offset
+    const tolerance = 4;
+    const distance = Phaser.Math.Distance.BetweenPoints(this, this.target);
+
+    if (this.body.speed > 0) {
+      this.distanceText.setText(`Distance: ${distance}`);
+
+      if (distance < tolerance) {
+        this.body.reset(this.target.x, this.target.y);
+      }
     }
   }
 }
