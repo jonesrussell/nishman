@@ -1,183 +1,75 @@
 import Phaser from 'phaser';
 
-/**
- * Constants representing keyboard key codes.
- * @type {Object}
- * @property {number} LEFT - The key code for the left arrow key.
- * @property {number} RIGHT - The key code for the right arrow key.
- * @property {number} UP - The key code for the up arrow key.
- * @property {number} DOWN - The key code for the down arrow key.
- * @property {number} ENTER - The key code for the enter key.
- * @property {number} SPACE - The key code for the space key.
- */
-const KEY_CODES = {
-    LEFT: 37,
-    RIGHT: 39,
-    UP: 38,
-    DOWN: 40,
-    ENTER: 13,
-    SPACE: 32
-};
-
-/**
- * An array of characters that can be added to the player's name.
- * @type {Array<string>}
- * @property {string[]} [0] - The first row of characters.
- * @property {string[]} [1] - The second row of characters.
- * @property {string[]} [2] - The third row of characters.
- */
-const CHARACTERS = [
-    ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
-    ['K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T'],
-    ['U', 'V', 'W', 'X', 'Y', 'Z', '.', '-', '<', '>']
-];
-
 export class Play extends Phaser.Scene {
-
-    /**
-     * Loads the necessary assets for the game.
-     * @method preload
-     */
     preload() {
-        this.load.image('block', 'assets/input/block.png');
-        this.load.image('rub', 'assets/input/rub.png');
-        this.load.image('end', 'assets/input/end.png');
-        this.load.bitmapFont('arcade', 'assets/fonts/bitmap/arcade.png', 'assets/fonts/bitmap/arcade.xml');
+        // Preload assets here
     }
 
-    /**
-     * Initializes the game scene.
-     * @method create
-     */
     create() {
-        /**
-         * Initializes the cursor and name variables.
-         * @member {Object} cursor - Represents the cursor's position on the game board.
-         * @member {string} name - Represents the player's name.
-         */
-        this.cursor = { x: 0, y: 0 };
-        this.name = '';
+        // Initialize the levels with their respective themes
+        let cultural_themes = {
+            'Seasons': ['Spring', 'Summer', 'Fall', 'Winter'],
+            'Elements': ['Water', 'Fire', 'Earth', 'Air'],
+            'Activities': ['Fishing', 'Hunting', 'Gathering', 'Storytelling'],
+            'Values': ['Respect', 'Love', 'Courage', 'Truth']
+        };
 
-        /**
-         * Sets up the game board, keyboard input, and pointer input.
-         */
-        this.setupGameBoard();
-        this.setupKeyboardInput();
-        this.setupPointerInput();
+        let levels = [];
+        for (let theme_category in cultural_themes) {
+            let themes = cultural_themes[theme_category];
+            for (let i = 0; i < themes.length; i++) {
+                let theme = themes[i];
+                let level = {
+                    'theme': theme,
+                    'introduction': '', // To be filled with a cultural description
+                    'challenges': [],    // To be filled with puzzles and tasks
+                    'story_segment': '' // To be filled with a part of the Anishinaabe story
+                };
+                levels.push(level);
+            }
+        }
+
+        // Example of adding a challenge to the first level
+        levels[0]['challenges'].push({
+            'type': 'word_match',
+            'ojibwe_word': 'Ziigwan',
+            'english_meaning': 'Spring'
+        });
+
+        // Fill in the introduction and story segment for the first level
+        levels[0]['introduction'] = 'Spring is a time of renewal and growth. It is a season when the earth begins to thaw, and the first signs of new life appear.';
+        levels[0]['story_segment'] = 'In the beginning, the Anishinaabe people lived in harmony with the seasons. Spring was a time of preparation for the summer harvest.';
+
+        // You can now use the levels array to dynamically generate game content or levels
+        // For example, you might display the introduction and story segment in the game UI
+        // Or, you might use the challenges to create interactive gameplay elements
+        // Display the introduction and story segment in the game UI
+        this.displayIntroductionAndStory(levels[0]);
+
+        // Create interactive gameplay elements based on the challenges
+        this.createGameplayElements(levels[0]['challenges']);
     }
 
-    /**
-     * Sets up the game board, keyboard input, and pointer input.
-     * @memberof Play
-     */
-    setupGameBoard() {
-        this.inputText = this.add.bitmapText(130, 50, 'arcade', 'ABCDEFGHIJ\n\nKLMNOPQRST\n\nUVWXYZ.-').setLetterSpacing(20);
-        this.inputText.setInteractive();
-
-        this.rub = this.add.image(this.inputText.x + 430, this.inputText.y + 148, 'rub');
-        this.end = this.add.image(this.inputText.x + 482, this.inputText.y + 148, 'end');
-
-        this.block = this.add.image(this.inputText.x - 10, this.inputText.y - 2, 'block').setOrigin(0);
-
-        this.legend = this.add.bitmapText(80, 260, 'arcade', 'RANK  SCORE   NAME').setTint(0xff00ff);
-        this.add.bitmapText(80, 310, 'arcade', '1ST   50000    ').setTint(0xff0000);
-
-        this.playerText = this.add.bitmapText(560, 310, 'arcade', this.name).setTint(0xff0000);
+    displayIntroductionAndStory(level) {
+        // Assuming you have a UI element to display text
+        let introductionText = this.add.text(10, 10, level.introduction, { fontSize: '16px', fill: '#000' });
+        let storyText = this.add.text(10, 30, level.story_segment, { fontSize: '16px', fill: '#000' });
     }
 
-    /**
-     * Sets up the keyboard input.
-     * @memberof Play
-     */
-    setupKeyboardInput() {
-        this.input.keyboard.on('keyup', event => {
-            switch (event.keyCode) {
-                case KEY_CODES.LEFT:
-                    this.moveCursor(-1, 0);
-                    break;
-                case KEY_CODES.RIGHT:
-                    this.moveCursor(1, 0);
-                    break;
-                case KEY_CODES.UP:
-                    this.moveCursor(0, -1);
-                    break;
-                case KEY_CODES.DOWN:
-                    this.moveCursor(0, 1);
-                    break;
-                case KEY_CODES.ENTER:
-                case KEY_CODES.SPACE:
-                    this.handleInput();
-                    break;
+    createGameplayElements(challenges) {
+        // Example of creating a simple interactive element for a word match challenge
+        challenges.forEach(challenge => {
+            if (challenge.type === 'word_match') {
+                // Create a button or interactive element for the word match challenge
+                let button = this.add.text(10, 50, challenge.ojibwe_word, { fontSize: '16px', fill: '#000' })
+                    .setInteractive()
+                    .on('pointerdown', () => {
+                        // Handle the interaction, e.g., check if the word is correct
+                        console.log('Word match challenge interacted with');
+                    });
             }
         });
     }
-
-    /**
-     * Moves the cursor on the game board.
-     * @memberof Play
-     * @param {number} dx - The x-coordinate change for the cursor.
-     * @param {number} dy - The y-coordinate change for the cursor.
-     */
-    moveCursor(dx, dy) {
-        if (this.cursor.x + dx >= 0 && this.cursor.x + dx < 10) {
-            this.cursor.x += dx;
-            this.block.x += 52 * dx;
-        }
-        if (this.cursor.y + dy >= 0 && this.cursor.y + dy < 3) {
-            this.cursor.y += dy;
-            this.block.y += 64 * dy;
-        }
-    }
-
-    /**
-     * Handles the input events for the game.
-     * @memberof Play
-     */
-    handleInput() {
-        if (this.cursor.x === 9 && this.cursor.y === 2 && this.name.length > 0) {
-            // Submit
-            console.log(this.name);
-        } else if (this.cursor.x === 8 && this.cursor.y === 2 && this.name.length > 0) {
-            // Rub
-            this.name = this.name.substr(0, this.name.length - 1);
-            this.playerText.text = this.name;
-        } else if (this.name.length < 3) {
-            // Add
-            this.name = this.name.concat(CHARACTERS[this.cursor.y][this.cursor.x]);
-            this.playerText.text = this.name;
-        }
-    }
-
-    /**
-     * Sets up pointer input for the game board.
-     * @memberof Play
-     */
-    setupPointerInput() {
-        /**
-         * Adds a listener for pointer move events on the game board.
-         * @param {Phaser.Input.Pointer} pointer - The pointer that triggered the event.
-         * @param {number} x - The x coordinate of the pointer, relative to the game board.
-         * @param {number} y - The y coordinate of the pointer, relative to the game board.
-         */
-        this.inputText.on('pointermove', (pointer, x, y) => {
-            const cx = Phaser.Math.Snap.Floor(x, 52, 0, true);
-            const cy = Phaser.Math.Snap.Floor(y, 64, 0, true);
-
-            this.moveCursor(cx - this.cursor.x, cy - this.cursor.y);
-        });
-
-        /**
-         * Adds a listener for pointer up events on the game board.
-         * @param {Phaser.Input.Pointer} pointer - The pointer that triggered the event.
-         * @param {number} x - The x coordinate of the pointer, relative to the game board.
-         * @param {number} y - The y coordinate of the pointer, relative to the game board.
-         */
-        this.inputText.on('pointerup', (pointer, x, y) => {
-            const cx = Phaser.Math.Snap.Floor(x, 52, 0, true);
-            const cy = Phaser.Math.Snap.Floor(y, 64, 0, true);
-
-            this.moveCursor(cx - this.cursor.x, cy - this.cursor.y);
-            this.handleInput();
-        });
-    }
 }
+
+export default Play;
