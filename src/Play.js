@@ -1,11 +1,49 @@
 import Phaser from 'phaser';
 
 export class Play extends Phaser.Scene {
+    controls;
+
     preload() {
-        // Preload assets here
+        this.load.tilemapCSV('map', 'assets/tilemaps/csv/bg.csv');
+        this.load.image('tiles', 'assets/tilemaps/tiles/seasonal_sample_autumn.png');
     }
 
     create() {
+        console.log('Play scene loaded');
+        console.log(this.cache.tilemap.entries);
+
+        // When loading a CSV map, make sure to specify the tileWidth and tileHeight
+        const map = this.make.tilemap({ key: 'map', tileWidth: 16, tileHeight: 16 });
+        const tileset = map.addTilesetImage('tiles');
+        const layer = map.createLayer(0, tileset, 0, 0); // layer index, tileset, x, y
+        layer.skipCull = true;
+
+        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+
+        const cursors = this.input.keyboard.createCursorKeys();
+
+        const controlConfig = {
+            camera: this.cameras.main,
+            left: cursors.left,
+            right: cursors.right,
+            up: cursors.up,
+            down: cursors.down,
+            speed: 0.5
+        };
+
+        this.controls = new Phaser.Cameras.Controls.FixedKeyControl(controlConfig);
+
+        const help = this.add.text(16, 16, 'Arrow keys to scroll', {
+            fontSize: '18px',
+            fill: '#ffffff'
+        });
+
+        help.setScrollFactor(0);
+
+        const cam = this.cameras.main;
+
+        cam.setBounds(0, 0, 4096, 4096);
+
         // Initialize the levels with their respective themes
         let cultural_themes = {
             'Seasons': ['Spring', 'Summer', 'Fall', 'Winter'],
@@ -37,7 +75,7 @@ export class Play extends Phaser.Scene {
         });
 
         // Fill in the introduction and story segment for the first level
-        levels[0]['introduction'] = 'Spring is a time of renewal and growth. It is a season when the earth begins to thaw, and the first signs of new life appear.';
+        levels[0]['introduction'] = "Spring is a time of renewal and growth. It is a season when the earth begins to thaw, and the first signs of new life appear.";
         levels[0]['story_segment'] = 'In the beginning, the Anishinaabe people lived in harmony with the seasons. Spring was a time of preparation for the summer harvest.';
 
         // You can now use the levels array to dynamically generate game content or levels
@@ -50,18 +88,22 @@ export class Play extends Phaser.Scene {
         this.createGameplayElements(levels[0]['challenges']);
     }
 
+    update(time, delta) {
+        this.controls.update(delta);
+    }
+
     displayIntroductionAndStory(level) {
-        // Assuming you have a UI element to display text
-        let introductionText = this.add.text(10, 10, level.introduction, { fontSize: '16px', fill: '#000' });
-        let storyText = this.add.text(10, 30, level.story_segment, { fontSize: '16px', fill: '#000' });
+        // Assuming you have a UI element to display text with wrapping
+        let introductionText = this.add.text(10, 10, level.introduction, { fontSize: '16px', fill: '#000', wordWrap: { width: 200 } });
+        let storyText = this.add.text(10, 30, level.story_segment, { fontSize: '16px', fill: '#000', wordWrap: { width: 200 } });
     }
 
     createGameplayElements(challenges) {
-        // Example of creating a simple interactive element for a word match challenge
+        // Example of creating a simple interactive element for a word match challenge with wrapping
         challenges.forEach(challenge => {
             if (challenge.type === 'word_match') {
-                // Create a button or interactive element for the word match challenge
-                let button = this.add.text(10, 50, challenge.ojibwe_word, { fontSize: '16px', fill: '#000' })
+                // Create a button or interactive element for the word match challenge with wrapping
+                let button = this.add.text(10, 50, challenge.ojibwe_word, { fontSize: '16px', fill: '#000', wordWrap: { width: 200 } })
                     .setInteractive()
                     .on('pointerdown', () => {
                         // Handle the interaction, e.g., check if the word is correct
