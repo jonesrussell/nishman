@@ -9,9 +9,6 @@ export class Play extends Phaser.Scene {
     }
 
     create() {
-        console.log('Play scene loaded');
-        console.log(this.cache.tilemap.entries);
-
         // When loading a CSV map, make sure to specify the tileWidth and tileHeight
         const map = this.make.tilemap({ key: 'map', tileWidth: 16, tileHeight: 16 });
         const tileset = map.addTilesetImage('tiles');
@@ -42,7 +39,7 @@ export class Play extends Phaser.Scene {
 
         const cam = this.cameras.main;
 
-        cam.setBounds(0, 0, 4096, 4096);
+        cam.setBounds(0, 0, 800, 600);
 
         // Initialize the levels with their respective themes
         let cultural_themes = {
