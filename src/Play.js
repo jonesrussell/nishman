@@ -6,6 +6,8 @@ export class Play extends Phaser.Scene {
     preload() {
         this.load.tilemapCSV('map', 'assets/tilemaps/csv/bg.csv');
         this.load.image('tiles', 'assets/tilemaps/tiles/seasonal_sample_autumn.png');
+
+        this.load.spritesheet('brawler', 'assets/sprites/gen-char.png', { frameWidth: 256, frameHeight: 256 });
     }
 
     create() {
@@ -14,6 +16,22 @@ export class Play extends Phaser.Scene {
         const tileset = map.addTilesetImage('tiles');
         const layer = map.createLayer(0, tileset, 0, 0); // layer index, tileset, x, y
         layer.skipCull = true;
+
+        // this.add.image(0, 0, 'brawler', '__BASE').setOrigin(0, 0);
+
+        this.anims.create({
+            key: 'walk',
+            frames: this.anims.generateFrameNumbers('brawler', { frames: [0, 1, 2, 3] }),
+            frameRate: 8,
+            repeat: -1
+        });
+
+        const keys = ['walk'];
+
+        const cody = this.add.sprite(600, 370);
+        cody.setScale(0.1);
+        cody.play('walk');
+
 
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
