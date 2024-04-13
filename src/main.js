@@ -1,4 +1,4 @@
-import { Play } from './Play';
+import Play from './Play';
 import Phaser from 'phaser';
 
 const config = {
