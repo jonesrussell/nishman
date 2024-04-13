@@ -1,7 +1,8 @@
 import Phaser from 'phaser';
+import Player from './classes/player';
 
 export class Play extends Phaser.Scene {
-    controls;
+    player;
 
     preload() {
         this.load.tilemapCSV('map', 'assets/tilemaps/csv/bg.csv');
@@ -17,36 +18,7 @@ export class Play extends Phaser.Scene {
         const layer = map.createLayer(0, tileset, 0, 0); // layer index, tileset, x, y
         layer.skipCull = true;
 
-        // this.add.image(0, 0, 'brawler', '__BASE').setOrigin(0, 0);
-
-        this.anims.create({
-            key: 'walk',
-            frames: this.anims.generateFrameNumbers('brawler', { frames: [0, 1, 2, 3] }),
-            frameRate: 8,
-            repeat: -1
-        });
-
-        const keys = ['walk'];
-
-        const cody = this.add.sprite(600, 370);
-        cody.setScale(0.1);
-        cody.play('walk');
-
-
-        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-
-        const cursors = this.input.keyboard.createCursorKeys();
-
-        const controlConfig = {
-            camera: this.cameras.main,
-            left: cursors.left,
-            right: cursors.right,
-            up: cursors.up,
-            down: cursors.down,
-            speed: 0.5
-        };
-
-        this.controls = new Phaser.Cameras.Controls.FixedKeyControl(controlConfig);
+        this.player = new Player(this, 100, 100);
 
         const help = this.add.text(16, 16, 'Arrow keys to scroll', {
             fontSize: '18px',
@@ -54,10 +26,6 @@ export class Play extends Phaser.Scene {
         });
 
         help.setScrollFactor(0);
-
-        const cam = this.cameras.main;
-
-        cam.setBounds(0, 0, 800, 600);
 
         // Initialize the levels with their respective themes
         let cultural_themes = {
@@ -104,7 +72,7 @@ export class Play extends Phaser.Scene {
     }
 
     update(time, delta) {
-        this.controls.update(delta);
+        this.player.update();
     }
 
     displayIntroductionAndStory(level) {
