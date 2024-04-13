@@ -1,0 +1,18 @@
+# Node.js dependencies
+/node_modules
+
+# Build artifacts
+/dist
+
+# IDE and editor files
+.vscode
+.idea
+*.sublime-project
+*.sublime-workspace
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Phaser 3 specific (if any)
+# Add any Phaser 3 specific files or directories here
