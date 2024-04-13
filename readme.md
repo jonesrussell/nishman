@@ -1,8 +1,8 @@
-# Memory Card Game
+# Nishman Game (Similar to Hangman)
 
-This is a simple memory card game. The goal is to match all the cards in the fewest number of moves.
+This is a word game. The goal is to guess the word by choosing letters to fill in the blanks.
 
-Click on a card to reveal its symbol. Click on a second card to reveal its symbol. If the symbols match, the cards will remain face up. If the symbols do not match, the cards will be hidden again. Continue until all cards are matched.
+Wrong guesses are a strike, 3 strikes you're out. Guess the word to continue to next word.
 
 ## Instructions
 
