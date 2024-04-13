@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 export default class Actor extends Phaser.Physics.Arcade.Sprite {
+
   constructor(scene, x, y, texture, frame) {
     super(scene, x, y, texture, frame);
     scene.add.existing(this);
@@ -10,9 +11,9 @@ export default class Actor extends Phaser.Physics.Arcade.Sprite {
 
   checkFlip() {
     if (this.body.velocity.x < 0) {
-      this.scaleX = -1;
+      this.scaleX = -0.1;
     } else {
-      this.scaleX = 1;
+      this.scaleX = 0.1;
     }
   }
 

@@ -1,6 +1,7 @@
 import Actor from './actor';
 
 export default class Player extends Actor {
+
   constructor(scene, x, y) {
     super(scene, x, y, 'player');
 
@@ -35,7 +36,7 @@ export default class Player extends Actor {
     if (this.keyA.isDown) {
       this.body.velocity.x = -110;
       this.checkFlip();
-      this.getBody().setOffset(48, 15);
+      this.getBody().setOffset(15, 15); // Adjusted offset
     }
     if (this.keyS.isDown) {
       this.body.velocity.y = 110;
@@ -43,7 +44,7 @@ export default class Player extends Actor {
     if (this.keyD.isDown) {
       this.body.velocity.x = 110;
       this.checkFlip();
-      this.getBody().setOffset(15, 15);
+      this.getBody().setOffset(15, 15); // Adjusted offset
     }
   }
 }
