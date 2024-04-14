@@ -43,3 +43,23 @@ This single-player game concept, "Anishinaabe Wisdom Quest," offers a respectful
 2. Install dependencies with `npm install`.
 3. Start the development server with `npm run dev`.
 4. If you want to build the project, run `npm run build`.
+
+## TODO
+
+### Dialogue
+
+**Create a Dialogue Class**:
+- This class will handle the display of the dialogue box, the text, and manage the flow of the conversation.
+- It can have methods to start a conversation, display the next line, and end the conversation.
+
+**Use JSON for Dialogue Data**:
+- You can store your dialogue data in a JSON file.
+- Each dialogue can have an ID, the lines of dialogue, and perhaps some metadata like the name of the NPC and any conditions for the dialogue.
+
+**Load Dialogue Data**:
+- In PhaserJS, you can load the JSON file in the preload function of your scene.
+- Then, in the create function, you can create a new instance of your Dialogue class and pass in the dialogue data.
+
+**Trigger Dialogue**:
+- You can trigger the dialogue in response to some event, like the player character colliding with an NPC.
+- You can use Phaser’s physics system to detect this collision.
