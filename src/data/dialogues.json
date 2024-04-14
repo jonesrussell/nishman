@@ -1,0 +1,30 @@
+[
+  {
+    "id": "dialogue1",
+    "lines": [
+      "Hello, adventurer!",
+      "How can I assist you today?"
+    ],
+    "metadata": {
+      "npcName": "Gandalf",
+      "conditions": {
+        "level": 5,
+        "questCompleted": "The Great Quest"
+      }
+    }
+  },
+  {
+    "id": "dialogue2",
+    "lines": [
+      "You're back!",
+      "I've been waiting for you."
+    ],
+    "metadata": {
+      "npcName": "Arwen",
+      "conditions": {
+        "level": 10,
+        "questCompleted": "The Great Quest"
+      }
+    }
+  }
+]

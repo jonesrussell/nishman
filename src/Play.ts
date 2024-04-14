@@ -1,10 +1,11 @@
 import Phaser from 'phaser';
 import Player from './classes/Player';
 import Actor from './classes/Actor';
+import Dialogue from './classes/Dialogue';
 
 export default class Play extends Phaser.Scene {
-    player;
-    elder;
+    player: Player;
+    elder: Actor;
 
     preload() {
         this.load.tilemapCSV('map', 'assets/tilemaps/csv/bg.csv');
@@ -12,6 +13,8 @@ export default class Play extends Phaser.Scene {
 
         this.load.spritesheet('player', 'assets/sprites/gen-char.png', { frameWidth: 256, frameHeight: 256 });
         this.load.spritesheet('elder', 'assets/sprites/gen-char.png', { frameWidth: 256, frameHeight: 256 });
+
+        this.load.json('dialogues', 'src/data/dialogues.json');
     }
 
     create() {
@@ -32,6 +35,16 @@ export default class Play extends Phaser.Scene {
 
         this.elder = new Actor(this, 650, 500, 'elder', null);
         this.elder.setScale(0.1);
+
+        // Load dialogue data
+        const dialoguesData = this.cache.json.get('dialogues');
+
+        // Assuming you want to start the conversation with the first dialogue
+        if (dialoguesData && dialoguesData.length > 0) {
+            const firstDialogue = dialoguesData[0];
+            const dialogueInstance = new Dialogue(this, 100, 100, 'dialogueSprite', null);
+            dialogueInstance.startConversation(firstDialogue.lines);
+        }
     }
 
     update(time, delta) {
