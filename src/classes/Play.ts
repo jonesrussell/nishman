@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
-import Player from './classes/Player';
-import Actor from './classes/Actor';
-import Dialogue from './classes/Dialogue';
+import Player from './Player';
+import Actor from './Actor';
+import Dialogue from './Dialogue';
 
 export default class Play extends Phaser.Scene {
     player: Player;
@@ -42,7 +42,7 @@ export default class Play extends Phaser.Scene {
         // Assuming you want to start the conversation with the first dialogue
         if (dialoguesData && dialoguesData.length > 0) {
             const firstDialogue = dialoguesData[0];
-            const dialogueInstance = new Dialogue(this, 100, 100, 'dialogueSprite', null);
+            const dialogueInstance = new Dialogue(this, 0, 0);
             dialogueInstance.startConversation(firstDialogue.lines);
         }
     }

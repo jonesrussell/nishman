@@ -1,20 +1,24 @@
 import Phaser from 'phaser';
 
-export default class Dialogue extends Phaser.GameObjects.Sprite {
+export default class Dialogue extends Phaser.GameObjects.Container {
   private lines: string[];
   private currentLineIndex: number;
   private isConversationActive: boolean;
 
-  constructor(
-    scene: Phaser.Scene,
-    x: number,
-    y: number,
-    texture: string | Phaser.Textures.Texture,
-    frame: string | number | null | undefined,
-  ) {
-    super(scene, x, y, texture, frame ?? undefined);
+  constructor(scene: Phaser.Scene, x: number, y: number) {
+    super(scene, x, y);
     scene.add.existing(this);
-    scene.physics.add.existing(this);
+
+    // Initialize your dialogue UI elements here
+    // For example, adding a background image and text
+    const background = scene.add.image(0, 0, 'dialogueBackground');
+    const text = scene.add.text(0, 0, '', { fontSize: '32px' });
+
+    // Add the elements to the container
+    this.add(background);
+    this.add(text);
+
+    this.setVisible(false);
   }
 
   startConversation(lines: string[]): void {
