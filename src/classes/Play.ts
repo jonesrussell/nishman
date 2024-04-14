@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import Player from './Player';
 import Actor from './Actor';
 import Dialogue from './Dialogue';
-import DialogueData from '../data/DialogueData';
+import DialogueData from '../../public/assets/data/DialogueData';
 
 export default class Play extends Phaser.Scene {
     player: Player;
@@ -17,7 +17,7 @@ export default class Play extends Phaser.Scene {
         this.load.spritesheet('player', 'assets/sprites/gen-char.png', { frameWidth: 256, frameHeight: 256 });
         this.load.spritesheet('elder', 'assets/sprites/gen-char.png', { frameWidth: 256, frameHeight: 256 });
 
-        this.load.json('dialogues', 'src/data/dialogues.json');
+        this.load.json('dialogues', '../data/dialogues.json');
     }
 
     create() {
@@ -42,19 +42,13 @@ export default class Play extends Phaser.Scene {
         // Other create logic...
         this.load.on('complete', () => {
             const dialoguesData = this.cache.json.get('dialogues');
+            console.log('load complete', dialoguesData);
             this.dialoguesData = dialoguesData as DialogueData[];
             // Now you can use this.dialoguesData as needed
         });
 
         // Load dialogue data
         console.log('this.dialoguesData', this.dialoguesData);
-
-        // Assuming you want to start the conversation with the first dialogue
-        if (this.dialoguesData && this.dialoguesData.length > 0) {
-            const firstDialogue = this.dialoguesData[0];
-            this.dialogueInstance = new Dialogue(this, 0, 0);
-            this.dialogueInstance.startConversation(firstDialogue.lines);
-        }
     }
 
     update() {
