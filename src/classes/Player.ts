@@ -1,13 +1,15 @@
-import Actor from './actor';
+import Actor from './Actor';
 
 export default class Player extends Actor {
+  target: Phaser.Math.Vector2;
+  distanceText: Phaser.GameObjects.Text;
 
   constructor(scene, x, y) {
-    super(scene, x, y, 'player');
+    super(scene, x, y, 'player', null);
 
     // PHYSICS
-    this.getBody().setSize(30, 30);
-    this.getBody().setOffset(8, 0);
+    this.getBody()?.setSize(30, 30);
+    this.getBody()?.setOffset(8, 0);
 
     this.anims.create({
       key: 'walk',
@@ -17,7 +19,7 @@ export default class Player extends Actor {
     });
 
     this.target = new Phaser.Math.Vector2();
-    this.distanceText = this.scene.add.text(10, 10, 'Click to set target', { fill: '#00ff00' });
+    this.distanceText = this.scene.add.text(10, 10, 'Click to set target', { color: '#00ff00' });
 
     this.scene.input.on('pointerdown', (pointer) => {
       this.target.x = pointer.x;
@@ -34,7 +36,7 @@ export default class Player extends Actor {
     const tolerance = 4;
     const distance = Phaser.Math.Distance.BetweenPoints(this, this.target);
 
-    if (this.body.speed > 0) {
+    if (this.body && this.body.velocity.length() > 0) {
       this.distanceText.setText(`Distance: ${distance}`);
 
       if (distance < tolerance) {
