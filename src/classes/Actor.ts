@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import Dialogue from './Dialogue';
 
 export default class Actor extends Phaser.Physics.Arcade.Sprite {
 
@@ -14,7 +15,8 @@ export default class Actor extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this);
   }
 
-  startDialogue() {
+  startDialogue(dialogue: Dialogue) {
+    console.log(dialogue);
     // Example: Display a dialogue box with text
     // This is a simplified example; you'll need to implement the actual dialogue logic
     // Additional logic to handle player choices, progress the story, etc.

@@ -2,10 +2,13 @@ import Phaser from 'phaser';
 import Player from './Player';
 import Actor from './Actor';
 import Dialogue from './Dialogue';
+import DialogueData from '../data/DialogueData';
 
 export default class Play extends Phaser.Scene {
     player: Player;
     elder: Actor;
+    dialoguesData: DialogueData[] = [];
+    dialogueInstance: Dialogue;
 
     preload() {
         this.load.tilemapCSV('map', 'assets/tilemaps/csv/bg.csv');
@@ -36,24 +39,33 @@ export default class Play extends Phaser.Scene {
         this.elder = new Actor(this, 650, 500, 'elder', null);
         this.elder.setScale(0.1);
 
+        // Other create logic...
+        this.load.on('complete', () => {
+            const dialoguesData = this.cache.json.get('dialogues');
+            this.dialoguesData = dialoguesData as DialogueData[];
+            // Now you can use this.dialoguesData as needed
+        });
+
         // Load dialogue data
-        const dialoguesData = this.cache.json.get('dialogues');
+        console.log('this.dialoguesData', this.dialoguesData);
 
         // Assuming you want to start the conversation with the first dialogue
-        if (dialoguesData && dialoguesData.length > 0) {
-            const firstDialogue = dialoguesData[0];
-            const dialogueInstance = new Dialogue(this, 0, 0);
-            dialogueInstance.startConversation(firstDialogue.lines);
+        if (this.dialoguesData && this.dialoguesData.length > 0) {
+            const firstDialogue = this.dialoguesData[0];
+            this.dialogueInstance = new Dialogue(this, 0, 0);
+            this.dialogueInstance.startConversation(firstDialogue.lines);
         }
     }
 
-    update(time, delta) {
+    update() {
         this.player.update();
 
         // Check if player is close enough to Elder to start dialogue
         const distanceToElder = Phaser.Math.Distance.BetweenPoints(this.player, this.elder);
         if (distanceToElder < 50) { // Example distance threshold
-            this.elder.startDialogue();
+            this.elder.startDialogue(this.dialogueInstance);
+            this.elder.update();
         }
     }
+
 }

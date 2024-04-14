@@ -1,4 +1,4 @@
-interface DialogueData {
+export default interface DialogueData {
   id: string;
   lines: string[];
   metadata: {
