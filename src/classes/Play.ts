@@ -1,14 +1,12 @@
 import Phaser from 'phaser';
 import Player from './Player';
 import Actor from './Actor';
-import Dialogue from './Dialogue';
-import DialogueData from '../../public/assets/data/DialogueData';
+import DialogPlugin from '../plugins/DialogPlugin';
 
 export default class Play extends Phaser.Scene {
     player: Player;
     elder: Actor;
-    dialoguesData: DialogueData[] = [];
-    dialogueInstance: Dialogue;
+    talky: DialogPlugin;
 
     preload() {
         this.load.tilemapCSV('map', 'assets/tilemaps/csv/bg.csv');
@@ -17,7 +15,7 @@ export default class Play extends Phaser.Scene {
         this.load.spritesheet('player', 'assets/sprites/gen-char.png', { frameWidth: 256, frameHeight: 256 });
         this.load.spritesheet('elder', 'assets/sprites/gen-char.png', { frameWidth: 256, frameHeight: 256 });
 
-        this.load.json('dialogues', '../data/dialogues.json');
+        this.load.json('dialogues', 'src/data/dialogues.json');
     }
 
     create() {
@@ -39,16 +37,8 @@ export default class Play extends Phaser.Scene {
         this.elder = new Actor(this, 650, 500, 'elder', null);
         this.elder.setScale(0.1);
 
-        // Other create logic...
-        this.load.on('complete', () => {
-            const dialoguesData = this.cache.json.get('dialogues');
-            console.log('load complete', dialoguesData);
-            this.dialoguesData = dialoguesData as DialogueData[];
-            // Now you can use this.dialoguesData as needed
-        });
-
-        // Load dialogue data
-        console.log('this.dialoguesData', this.dialoguesData);
+        this.talky = this.plugins.get('talky') as DialogPlugin;
+        this.talky.loadDialogData(this.cache.json.get('dialogues'));
     }
 
     update() {
@@ -57,8 +47,9 @@ export default class Play extends Phaser.Scene {
         // Check if player is close enough to Elder to start dialogue
         const distanceToElder = Phaser.Math.Distance.BetweenPoints(this.player, this.elder);
         if (distanceToElder < 50) { // Example distance threshold
-            this.elder.startDialogue(this.dialogueInstance);
             this.elder.update();
+            this.talky.converse(1);
+            this.game.pause();
         }
     }
 

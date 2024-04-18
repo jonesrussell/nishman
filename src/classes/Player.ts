@@ -4,7 +4,7 @@ export default class Player extends Actor {
   target: Phaser.Math.Vector2;
   distanceText: Phaser.GameObjects.Text;
 
-  constructor(scene, x, y) {
+  constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, 'player', null);
 
     // PHYSICS
@@ -21,7 +21,7 @@ export default class Player extends Actor {
     this.target = new Phaser.Math.Vector2();
     this.distanceText = this.scene.add.text(10, 10, 'Click to set target', { color: '#00ff00' });
 
-    this.scene.input.on('pointerdown', (pointer) => {
+    this.scene.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
       this.target.x = pointer.x;
       this.target.y = pointer.y;
 

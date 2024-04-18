@@ -1,5 +1,6 @@
 import Play from './classes/Play';
 import Phaser from 'phaser';
+import DialogPlugin from './plugins/DialogPlugin';
 
 const config = {
     title: 'Nishman Game',
@@ -18,6 +19,17 @@ const config = {
         arcade: {
             debug: true
         }
+    },
+    plugins: {
+        global: [
+            {
+                key: 'talky',
+                plugin: DialogPlugin,
+                start: false
+                // mapping: memberName  // member name in each scene instance, optional
+                // data: undefined
+            }
+        ]
     },
     scene: Play
 };
