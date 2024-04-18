@@ -1,6 +1,6 @@
 // src/classes/Dialog.ts
 import Phaser from 'phaser';
-import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin';
+import '../types/phaser-rexui.d.ts';
 
 export default class Dialog {
   scene: Phaser.Scene;
@@ -10,9 +10,7 @@ export default class Dialog {
   }
 
   createDialog(x: number, y: number, title: string, content: string, actions: string[]) {
-    const d = this.scene.sys.rexUI;
-
-    d?.add.dialog({
+    let dialog = this.scene.sys.rexUI.add.dialog({
       x: x,
       y: y,
       background: this.scene.sys.rexUI.add.roundRectangle(0, 0, 100, 100, 20, 0x1565c0),
@@ -49,20 +47,26 @@ export default class Dialog {
       }
     }).layout().popUp(1000);
 
-    /*d.on('button.click', (button, groupName, index) => {
-      console.log(index + ': ' + button.text);
-    })
-      .on('button.over', (button, groupName, index) => {
-        button.getElement('background').setStrokeStyle(1, 0xffffff);
+    dialog
+      .on('button.click', function (button: Phaser.GameObjects.Text, _groupName: string, index: number) {
+        console.log(index + ': ' + button.text);
       })
-      .on('button.out', (button, groupName, index) => {
-        button.getElement('background').setStrokeStyle();
-      });*/
+      .on('button.over', function (button: Phaser.GameObjects.GameObject, _groupName: string, _index: number) {
+        if (button instanceof Phaser.GameObjects.GameObject) {
+          (button as any).getElement('background').setStrokeStyle(1, 0xffffff);
+        }
+      })
+      .on('button.out', function (button: Phaser.GameObjects.GameObject, _groupName: string, _index: number) {
+        if (button instanceof Phaser.GameObjects.GameObject) {
+          (button as any).getElement('background').setStrokeStyle();
+        }
+      });
+
   }
 
   createLabel(text: string) {
-    return this.scene.sys.rexUI?.add.label({
-      background: this.scene.plugins?.get('rexUI')?.add.roundRectangle(0, 0, 0, 0, 20, 0x5e92f3),
+    return this.scene.sys.rexUI.add.label({
+      background: this.scene.sys.rexUI.add.roundRectangle(0, 0, 0, 0, 20, 0x5e92f3),
       text: this.scene.add.text(0, 0, text, {
         fontSize: '24px'
       }),
