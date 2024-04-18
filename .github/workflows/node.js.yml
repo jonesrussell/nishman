@@ -1,8 +1,5 @@
-# Sample workflow for building and deploying a Next.js site to GitHub Pages
-#
-# To get started with Next.js see: https://nextjs.org/docs/getting-started
-#
-name: Deploy Next.js site to Pages
+# Workflow for building and deploying a PhaserJS game to GitHub Pages
+name: Deploy PhaserJS game to Pages
 
 on:
     # Runs on pushes targeting the default branch
@@ -37,12 +34,10 @@ jobs:
                   if [ -f "${{ github.workspace }}/yarn.lock" ]; then
                     echo "manager=yarn" >> $GITHUB_OUTPUT
                     echo "command=install" >> $GITHUB_OUTPUT
-                    echo "runner=yarn" >> $GITHUB_OUTPUT
                     exit 0
                   elif [ -f "${{ github.workspace }}/package.json" ]; then
                     echo "manager=npm" >> $GITHUB_OUTPUT
                     echo "command=ci" >> $GITHUB_OUTPUT
-                    echo "runner=npx --no-install" >> $GITHUB_OUTPUT
                     exit 0
                   else
                     echo "Unable to determine package manager"
