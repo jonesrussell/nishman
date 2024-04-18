@@ -1,12 +1,15 @@
 import Phaser from 'phaser';
 import Player from './Player';
 import Actor from './Actor';
+import Dialog from './Dialog';
 import DialogPlugin from '../plugins/DialogPlugin';
 
 export default class Play extends Phaser.Scene {
     player: Player;
     elder: Actor;
     talky: DialogPlugin;
+    shouldOpenDialog: boolean = false; // Flag to track if the dialog should be opened
+    dialogOpened: boolean = false; // Flag to track if the dialog has already been opened
 
     preload() {
         this.load.tilemapCSV('map', 'assets/tilemaps/csv/bg.csv');
@@ -39,6 +42,10 @@ export default class Play extends Phaser.Scene {
 
         this.talky = this.plugins.get('talky') as DialogPlugin;
         this.talky.loadDialogData(this.cache.json.get('dialogues'));
+
+        /** Dialog */
+        // const dialog = new Dialog(this);
+        // dialog.createDialog(400, 300, 'Fella', 'Do you want to build a snow man?', ['Yes', 'No']);
     }
 
     update() {
@@ -46,10 +53,17 @@ export default class Play extends Phaser.Scene {
 
         // Check if player is close enough to Elder to start dialogue
         const distanceToElder = Phaser.Math.Distance.BetweenPoints(this.player, this.elder);
-        if (distanceToElder < 50) { // Example distance threshold
+        if (distanceToElder < 50 && !this.dialogOpened) { // Check distance and dialog state
             this.elder.update();
-            this.talky.converse(1);
-            this.game.pause();
+            this.shouldOpenDialog = true; // Set the flag to true
+        }
+
+        // Check if the flag is true and open the dialog
+        if (this.shouldOpenDialog && !this.dialogOpened) {
+            const dialog = new Dialog(this);
+            dialog.createDialog(400, 300, 'Fella', 'Do you want to build a snow man?', ['Yes', 'No']);
+            this.shouldOpenDialog = false; // Reset the flag
+            this.dialogOpened = true; // Set the dialog opened flag to true
         }
     }
 
