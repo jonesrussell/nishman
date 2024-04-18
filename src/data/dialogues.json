@@ -1,0 +1,77 @@
+{
+  "actor": [
+    {
+      "id": 1,
+      "name": {
+        "first": "Flynn",
+        "last": ""
+      }
+    },
+    {
+      "type": "actor",
+      "id": 2,
+      "name": {
+        "first": "June",
+        "last": ""
+      }
+    }
+  ],
+  "answer": [
+    {
+      "id": 1,
+      "emotion": 1,
+      "text": "Hey there {actor: 0x002}, I am doing good."
+    },
+    {
+      "id": 2,
+      "emotion": 7,
+      "text": "Hey {actor: 0x002}, I am tired today."
+    }
+  ],
+  "dialog": [
+    {
+      "id": 1,
+      "type": "question",
+      "actorId": 2,
+      "emotion": 0,
+      "text": "Ahnii {actor: 0x001}!",
+      "answers": [
+        {
+          "answerId": 1,
+          "next": 2
+        },
+        {
+          "answerId": 2,
+          "next": 3
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "question",
+      "actorId": 2,
+      "emotion": 0,
+      "text": "How are you today?",
+      "answers": [
+        {
+          "answerId": 1,
+          "next": 2
+        },
+        {
+          "answerId": 2,
+          "next": 3
+        }
+      ]
+    }
+  ],
+  "emotion": [
+    "Happy",
+    "Curious",
+    "Joking",
+    "Joyful",
+    "Playful",
+    "Sad",
+    "Sorrowful",
+    "Tired"
+  ]
+}
