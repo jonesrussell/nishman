@@ -16,3 +16,5 @@ Thumbs.db
 
 # Phaser 3 specific (if any)
 # Add any Phaser 3 specific files or directories here
+logs/
+tests_output/

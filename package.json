@@ -11,10 +11,14 @@
   "licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
   "scripts": {
     "dev": "vite --config vite/config.dev.mjs",
-    "build": "vite build --config vite/config.prod.mjs"
+    "build": "vite build --config vite/config.prod.mjs",
+    "test": "echo true"
   },
   "devDependencies": {
+    "@swc/core": "^1.4.15",
+    "nightwatch": "^3.6.0",
     "terser": "^5.30.3",
+    "ts-node": "^10.9.2",
     "typescript": "^5.4.5",
     "vite": "^5.2.0"
   },
