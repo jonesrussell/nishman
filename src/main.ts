@@ -1,6 +1,7 @@
 import Play from './classes/Play';
 import Phaser from 'phaser';
 import DialogPlugin from './plugins/DialogPlugin';
+import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin';
 
 const config = {
     title: 'Nishman Game',
@@ -28,6 +29,13 @@ const config = {
                 start: false
                 // mapping: memberName  // member name in each scene instance, optional
                 // data: undefined
+            }
+        ],
+        scene: [
+            {
+                key: 'rexUI',
+                plugin: RexUIPlugin,
+                mapping: 'rexUI'
             }
         ]
     },
