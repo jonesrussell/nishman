@@ -1,5 +1,7 @@
 # Workflow for building and deploying a PhaserJS game to GitHub Pages
-name: Deploy PhaserJS game to Pages
+name: Phaser JS to Pages
+
+run-name: ${{ github.actor }} is deploying to GitHub Pages 🚀
 
 on:
     # Runs on pushes targeting the default branch
