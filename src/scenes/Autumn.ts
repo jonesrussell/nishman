@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import Player from '../classes/Player';
 import Actor from '../classes/Actor';
-import DialogManager from '../plugins/DialogManager';
+import DialogManager from '../plugins/DialogManager/DialogManager';
 
 const DISTANCE_TO_OPEN_DIALOG = 50;
 const PLAYER_SCALE = 0.1;
@@ -56,8 +56,8 @@ export default class Autumn extends Phaser.Scene {
         this.elder.setScale(ELDER_SCALE);
 
         this.talky = this.plugins.get('talky') as DialogManager;
-        this.talky.setScene(this);
-        this.talky.loadDialogData(this.cache.json.get('dialogues'));
+        this.talky.setScene(this, this.sys.rexUI);
+        this.talky.dialogData.loadDialogData(this.cache.json.get('dialogues'));
     }
 
     update() {
@@ -76,14 +76,14 @@ export default class Autumn extends Phaser.Scene {
         // Check if the flag is true and open the dialog
         if (this.shouldOpenDialog && !this.dialogOpened) {
             // Assuming talky.getDialogue(key) returns the dialogue data
-            const dialogData = this.talky.getDialogueById(1);
+            const dialogData = this.talky.dialogData.getDialogueById(1);
 
             // Then use dialogData to create the dialog
-            this.talky.createDialog(
+            this.talky.dialogCreator.createDialog(
                 DIALOG_X_POSITION,
                 DIALOG_Y_POSITION,
                 dialogData.speaker,
-                this.talky.processText(dialogData.text),
+                this.talky.dialogData.processText(dialogData.text),
                 ['Good', 'Bad'],
             );
             this.shouldOpenDialog = false; // Reset the flag

@@ -1,8 +1,8 @@
 // TitleScreen.ts
-import Phaser from 'phaser';
+import { Scene } from 'phaser';
 import StatesBitmapText from 'phaser3-rex-plugins/templates/ui/statesbitmaptext/StatesBitmapText';
 
-export default class TitleScreen extends Phaser.Scene {
+export default class TitleScreen extends Scene {
   constructor() {
     super({ key: 'TitleScreen' });
   }

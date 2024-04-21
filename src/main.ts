@@ -2,7 +2,7 @@ import Autumn from './scenes/Autumn';
 import TitleScreen from './scenes/TitleScreen';
 import Phaser from 'phaser';
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin';
-import DialogManager from './plugins/DialogManager';
+import DialogManager from './plugins/DialogManager/DialogManager';
 
 const config = {
     title: 'Nishman Game',
