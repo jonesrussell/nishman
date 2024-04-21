@@ -18,3 +18,5 @@ Thumbs.db
 # Add any Phaser 3 specific files or directories here
 logs/
 tests_output/
+
+*.Identifier
