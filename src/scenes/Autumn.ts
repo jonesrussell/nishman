@@ -10,12 +10,16 @@ const ELDER_SCALE = 0.1;
 const DIALOG_X_POSITION = 400;
 const DIALOG_Y_POSITION = 300;
 
-export default class Play extends Phaser.Scene {
+export default class Autumn extends Phaser.Scene {
     player: Player;
     elder: Actor;
     talky: DialogPlugin;
     shouldOpenDialog: boolean = false; // Flag to track if the dialog should be opened
     dialogOpened: boolean = false; // Flag to track if the dialog has already been opened
+
+    constructor() {
+        super({ key: 'Autumn' });
+    }
 
     /**
      * preload method of the Play scene

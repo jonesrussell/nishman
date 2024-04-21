@@ -1,4 +1,4 @@
-import Play from './scenes/Play';
+import Autumn from './scenes/Autumn';
 import TitleScreen from './scenes/TitleScreen';
 import Phaser from 'phaser';
 import DialogPlugin from './plugins/DialogPlugin';
@@ -40,7 +40,7 @@ const config = {
             }
         ]
     },
-    scene: [TitleScreen, Play]
+    scene: [TitleScreen, Autumn]
 };
 
 const game = new Phaser.Game(config);
