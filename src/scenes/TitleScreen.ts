@@ -19,7 +19,7 @@ export default class TitleScreen extends Scene {
 
   loadAssets() {
     this.load.image('title-bg', 'assets/scenes/anishinaabe.png');
-    this.load.bitmapFont('arcade', 'assets/fonts/bitmap/arcade.png', 'ssets/fonts/bitmap/arcade.xml');
+    this.load.bitmapFont('arcade', 'assets/fonts/bitmap/arcade.png', 'assets/fonts/bitmap/arcade.xml');
   }
 
   createBackground() {
