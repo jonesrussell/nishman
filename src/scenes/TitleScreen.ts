@@ -8,27 +8,43 @@ export default class TitleScreen extends Phaser.Scene {
   }
 
   preload() {
-    // Load assets
-    this.load.image('title-bg', '/assets/scenes/anishinaabe.png');
-    this.load.bitmapFont('arcade', 'assets/fonts/bitmap/arcade.png', 'assets/fonts/bitmap/arcade.xml');
+    this.loadAssets();
   }
 
   create() {
-    // Add background image at the center of the screen
+    this.createBackground();
+    this.createTitleText();
+    this.createStartButton();
+  }
+
+  loadAssets() {
+    this.load.image('title-bg', '/assets/scenes/anishinaabe.png');
+    this.load.bitmapFont('arcade', '/assets/fonts/bitmap/arcade.png', '/assets/fonts/bitmap/arcade.xml');
+  }
+
+  createBackground() {
     this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'title-bg')
       .setScale(1);
+  }
 
-    // Add title text with brown color
+  createTitleText() {
     const titleText: StatesBitmapText = this.add.bitmapText(400, 150, 'arcade', 'Anishinaabe', 32);
     titleText.setTint(0xff0000); // Red tint
     titleText.setOrigin(0.5);
+  }
 
-    // Add start game button with brown color
+  createStartButton() {
     const startButton = this.add.bitmapText(400, 220, 'arcade', 'Start Game', 16);
     startButton.setOrigin(0.5);
     startButton.setInteractive();
-    startButton.setTint(0x0000ff); // Red tint
-    startButton.on('pointerdown', () => this.scene.start('Autumn'));
-    startButton.on('click', () => this.scene.start('Autumn'));
+    startButton.setTint(0x0000ff); // Blue tint
+    startButton.on('pointerdown', () => {
+      console.log('pointerdown event triggered');
+      this.scene.start('Autumn');
+    });
+    startButton.on('click', () => {
+      console.log('click event triggered');
+      this.scene.start('Autumn');
+    });
   }
 }

@@ -1,8 +1,7 @@
 import Phaser from 'phaser';
 import Player from '../classes/Player';
 import Actor from '../classes/Actor';
-import Dialog from '../classes/Dialog';
-import DialogPlugin from '../plugins/DialogPlugin';
+import DialogManager from '../plugins/DialogManager';
 
 const DISTANCE_TO_OPEN_DIALOG = 50;
 const PLAYER_SCALE = 0.1;
@@ -13,7 +12,7 @@ const DIALOG_Y_POSITION = 300;
 export default class Autumn extends Phaser.Scene {
     player: Player;
     elder: Actor;
-    talky: DialogPlugin;
+    talky: DialogManager;
     shouldOpenDialog: boolean = false; // Flag to track if the dialog should be opened
     dialogOpened: boolean = false; // Flag to track if the dialog has already been opened
 
@@ -56,7 +55,8 @@ export default class Autumn extends Phaser.Scene {
         this.elder = new Actor(this, 650, 500, 'elder', null);
         this.elder.setScale(ELDER_SCALE);
 
-        this.talky = this.plugins.get('talky') as DialogPlugin;
+        this.talky = this.plugins.get('talky') as DialogManager;
+        this.talky.setScene(this);
         this.talky.loadDialogData(this.cache.json.get('dialogues'));
     }
 
@@ -75,8 +75,12 @@ export default class Autumn extends Phaser.Scene {
 
         // Check if the flag is true and open the dialog
         if (this.shouldOpenDialog && !this.dialogOpened) {
-            const dialog = new Dialog(this);
-            dialog.createDialog(DIALOG_X_POSITION, DIALOG_Y_POSITION, 'Fella', 'Do you want to build a snow man?', ['Yes', 'No']);
+            // Assuming talky.getDialogue(key) returns the dialogue data
+            const dialogData = this.talky.getDialogueById(1);
+
+            // Then use dialogData to create the dialog
+            // dialog.createDialog(DIALOG_X_POSITION, DIALOG_Y_POSITION, 'Fella', 'Do you want to build a snow man?', ['Yes', 'No']);
+            this.talky.createDialog(DIALOG_X_POSITION, DIALOG_Y_POSITION, dialogData.speaker, this.talky.processText(dialogData.text), dialogData.options);
             this.shouldOpenDialog = false; // Reset the flag
             this.dialogOpened = true; // Set the dialog opened flag to true
         }

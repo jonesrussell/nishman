@@ -1,8 +1,8 @@
 import Autumn from './scenes/Autumn';
 import TitleScreen from './scenes/TitleScreen';
 import Phaser from 'phaser';
-import DialogPlugin from './plugins/DialogPlugin';
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin';
+import DialogManager from './plugins/DialogManager';
 
 const config = {
     title: 'Nishman Game',
@@ -23,20 +23,20 @@ const config = {
         }
     },
     plugins: {
-        global: [
-            {
-                key: 'talky',
-                plugin: DialogPlugin,
-                start: false
-                // mapping: memberName  // member name in each scene instance, optional
-                // data: undefined
-            }
-        ],
         scene: [
             {
                 key: 'rexUI',
                 plugin: RexUIPlugin,
                 mapping: 'rexUI'
+            }
+        ],
+        global: [
+            {
+                key: 'talky',
+                plugin: DialogManager,
+                start: false
+                // mapping: memberName  // member name in each scene instance, optional
+                // data: undefined
             }
         ]
     },
