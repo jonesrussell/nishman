@@ -1,8 +1,14 @@
 import Phaser from 'phaser';
-import Player from './Player';
-import Actor from './Actor';
-import Dialog from './Dialog';
+import Player from '../classes/Player';
+import Actor from '../classes/Actor';
+import Dialog from '../classes/Dialog';
 import DialogPlugin from '../plugins/DialogPlugin';
+
+const DISTANCE_TO_OPEN_DIALOG = 50;
+const PLAYER_SCALE = 0.1;
+const ELDER_SCALE = 0.1;
+const DIALOG_X_POSITION = 400;
+const DIALOG_Y_POSITION = 300;
 
 export default class Play extends Phaser.Scene {
     player: Player;
@@ -11,6 +17,9 @@ export default class Play extends Phaser.Scene {
     shouldOpenDialog: boolean = false; // Flag to track if the dialog should be opened
     dialogOpened: boolean = false; // Flag to track if the dialog has already been opened
 
+    /**
+     * preload method of the Play scene
+     */
     preload() {
         this.load.tilemapCSV('map', 'assets/tilemaps/csv/bg.csv');
         this.load.image('tiles', 'assets/tilemaps/tiles/seasonal_sample_autumn.png');
@@ -21,6 +30,9 @@ export default class Play extends Phaser.Scene {
         this.load.json('dialogues', 'src/data/dialogues.json');
     }
 
+    /**
+     * create method of the Play scene
+     */
     create() {
         // When loading a CSV map, make sure to specify the tileWidth and tileHeight
         const map = this.make.tilemap({ key: 'map', tileWidth: 16, tileHeight: 16 });
@@ -35,33 +47,32 @@ export default class Play extends Phaser.Scene {
         }
 
         this.player = new Player(this, 100, 100);
-        this.player.setScale(0.1);
+        this.player.setScale(PLAYER_SCALE);
 
         this.elder = new Actor(this, 650, 500, 'elder', null);
-        this.elder.setScale(0.1);
+        this.elder.setScale(ELDER_SCALE);
 
         this.talky = this.plugins.get('talky') as DialogPlugin;
         this.talky.loadDialogData(this.cache.json.get('dialogues'));
-
-        /** Dialog */
-        // const dialog = new Dialog(this);
-        // dialog.createDialog(400, 300, 'Fella', 'Do you want to build a snow man?', ['Yes', 'No']);
     }
 
     update() {
+        /**
+         * Update method of the Play scene
+         */
         this.player.update();
 
         // Check if player is close enough to Elder to start dialogue
         const distanceToElder = Phaser.Math.Distance.BetweenPoints(this.player, this.elder);
-        if (distanceToElder < 50 && !this.dialogOpened) { // Check distance and dialog state
+        if (distanceToElder < DISTANCE_TO_OPEN_DIALOG && !this.dialogOpened) {
             this.elder.update();
-            this.shouldOpenDialog = true; // Set the flag to true
+            this.shouldOpenDialog = true;
         }
 
         // Check if the flag is true and open the dialog
         if (this.shouldOpenDialog && !this.dialogOpened) {
             const dialog = new Dialog(this);
-            dialog.createDialog(400, 300, 'Fella', 'Do you want to build a snow man?', ['Yes', 'No']);
+            dialog.createDialog(DIALOG_X_POSITION, DIALOG_Y_POSITION, 'Fella', 'Do you want to build a snow man?', ['Yes', 'No']);
             this.shouldOpenDialog = false; // Reset the flag
             this.dialogOpened = true; // Set the dialog opened flag to true
         }

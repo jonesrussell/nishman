@@ -1,4 +1,5 @@
-import Play from './classes/Play';
+import Play from './scenes/Play';
+import TitleScreen from './scenes/TitleScreen';
 import Phaser from 'phaser';
 import DialogPlugin from './plugins/DialogPlugin';
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin';
@@ -39,7 +40,7 @@ const config = {
             }
         ]
     },
-    scene: Play
+    scene: [TitleScreen, Play]
 };
 
 const game = new Phaser.Game(config);
