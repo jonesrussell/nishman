@@ -17,6 +17,9 @@ const phasermsg = () => {
 }
 
 export default defineConfig({
+    loader: {
+        baseURL: '/nishman/assets'
+    },
     base: '/nishman',
     logLevel: 'warning',
     build: {
@@ -43,5 +46,10 @@ export default defineConfig({
     },
     plugins: [
         phasermsg()
-    ]
+    ],
+    resolve: {
+        alias: {
+            assets: "/public/assets",
+        },
+    }
 });
