@@ -80,7 +80,13 @@ export default class Autumn extends Phaser.Scene {
 
             // Then use dialogData to create the dialog
             // dialog.createDialog(DIALOG_X_POSITION, DIALOG_Y_POSITION, 'Fella', 'Do you want to build a snow man?', ['Yes', 'No']);
-            this.talky.createDialog(DIALOG_X_POSITION, DIALOG_Y_POSITION, dialogData.speaker, this.talky.processText(dialogData.text), dialogData.options);
+            this.talky.createDialog(
+                DIALOG_X_POSITION,
+                DIALOG_Y_POSITION,
+                dialogData.speaker,
+                this.talky.processText(dialogData.text),
+                ['Good', 'Bad'],
+            );
             this.shouldOpenDialog = false; // Reset the flag
             this.dialogOpened = true; // Set the dialog opened flag to true
         }

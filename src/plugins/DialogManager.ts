@@ -101,6 +101,10 @@ export default class DialogManager extends Phaser.Plugins.BasePlugin {
     });
   }
 
+  speaker() {
+    //return;
+  }
+
   init() {
     console.log('init');
   }
@@ -148,6 +152,24 @@ export default class DialogManager extends Phaser.Plugins.BasePlugin {
   }
 
   getDialogueById(id: number) {
-    return this.dialogData.dialog.find((dialog: DialogObject) => dialog.id === id);
+    let data = this.dialogData.dialog.find((dialog: DialogObject) => dialog.id === id);
+    if (data) {
+      // Find the actor by actorId from the actor array
+      data.speaker = this.dialogData.actor.find((actor: any) => actor.id === data.actorId);
+      if (data.speaker) {
+        // Assuming you want to set the speaker's name as the speaker
+        data.speaker = data.speaker.name.first;
+      }
+
+      // Loop over answers, get answerId, set answer to this.dialogData.answer.id's text
+      if (data.answers) {
+        data.answers = data.answers.map((answer: any) => {
+          const answerText = this.dialogData.answer.find((a: any) => a.id === answer.answerId);
+          return answerText ? answerText.text : '';
+        });
+      }
+    }
+    console.log(data);
+    return data;
   }
 }
