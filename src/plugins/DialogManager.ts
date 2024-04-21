@@ -31,8 +31,6 @@ export default class DialogManager extends Phaser.Plugins.BasePlugin {
   }
 
   createDialog(x: number, y: number, title: string, content: string, answers: string[] = []) {
-    console.log('rexUI', this.rexUI);
-
     let dialog = this.rexUI.add.dialog({
       x: x,
       y: y,
@@ -101,31 +99,10 @@ export default class DialogManager extends Phaser.Plugins.BasePlugin {
     });
   }
 
-  speaker() {
-    //return;
-  }
-
-  init() {
-    console.log('init');
-  }
-
   loadDialogData(data: any) {
     this.dialogData = data;
     // Initialize the first dialog state
     // this.currentDialog = this.dialogData.dialog[0];
-  }
-
-  converse(dialogId: number) {
-    // Find the dialog by its ID
-    const dialog = this.dialogData.dialog.find((d: DialogObject) => d.id === dialogId);
-    if (dialog) {
-      this.currentDialog = dialog;
-      // Process and display the dialog text
-      const processedText = this.processText(this.currentDialog.text);
-      console.log(processedText); // Replace this with actual display logic
-    } else {
-      console.error(`Dialog with ID ${dialogId} not found.`);
-    }
   }
 
   processText(text: string): string {
@@ -169,7 +146,7 @@ export default class DialogManager extends Phaser.Plugins.BasePlugin {
         });
       }
     }
-    console.log(data);
+
     return data;
   }
 }

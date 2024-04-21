@@ -38,12 +38,11 @@ export default class TitleScreen extends Phaser.Scene {
     startButton.setOrigin(0.5);
     startButton.setInteractive();
     startButton.setTint(0x0000ff); // Blue tint
+
     startButton.on('pointerdown', () => {
-      console.log('pointerdown event triggered');
       this.scene.start('Autumn');
     });
     startButton.on('click', () => {
-      console.log('click event triggered');
       this.scene.start('Autumn');
     });
   }

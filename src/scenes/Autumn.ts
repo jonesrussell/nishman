@@ -79,7 +79,6 @@ export default class Autumn extends Phaser.Scene {
             const dialogData = this.talky.getDialogueById(1);
 
             // Then use dialogData to create the dialog
-            // dialog.createDialog(DIALOG_X_POSITION, DIALOG_Y_POSITION, 'Fella', 'Do you want to build a snow man?', ['Yes', 'No']);
             this.talky.createDialog(
                 DIALOG_X_POSITION,
                 DIALOG_Y_POSITION,
