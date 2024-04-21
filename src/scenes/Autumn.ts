@@ -24,13 +24,13 @@ export default class Autumn extends Phaser.Scene {
      * preload method of the Play scene
      */
     preload() {
-        this.load.tilemapCSV('map', '/assets/tilemaps/csv/bg.csv');
-        this.load.image('tiles', '/assets/tilemaps/tiles/seasonal_sample_autumn.png');
+        this.load.tilemapCSV('map', 'assets/tilemaps/csv/bg.csv');
+        this.load.image('tiles', 'assets/tilemaps/tiles/seasonal_sample_autumn.png');
 
-        this.load.spritesheet('player', '/assets/sprites/gen-char.png', { frameWidth: 256, frameHeight: 256 });
-        this.load.spritesheet('elder', '/assets/sprites/gen-char.png', { frameWidth: 256, frameHeight: 256 });
+        this.load.spritesheet('player', 'assets/sprites/gen-char.png', { frameWidth: 256, frameHeight: 256 });
+        this.load.spritesheet('elder', 'assets/sprites/gen-char.png', { frameWidth: 256, frameHeight: 256 });
 
-        this.load.json('dialogues', '/assets/data/dialogues.json');
+        this.load.json('dialogues', 'assets/data/dialogues.json');
     }
 
     /**
