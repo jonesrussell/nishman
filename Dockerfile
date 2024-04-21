@@ -29,4 +29,4 @@ COPY --from=builder /usr/src/app/dist /usr/src/app/dist
 EXPOSE 5000
 
 # Define the command to run your app using serve
-CMD ["serve", "-s", "dist", "-l", "5000"]
+CMD ["serve", "-s", "/usr/src/app/dist", "-l", "5000"]
