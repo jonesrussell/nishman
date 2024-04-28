@@ -5,7 +5,7 @@ import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin';
 import DialogManager from './plugins/DialogManager/DialogManager';
 
 const config = {
-    title: 'Nishman Game',
+    title: 'Anishinaabe',
     type: Phaser.AUTO,
     width: 800,
     height: 600,
