@@ -1,6 +1,8 @@
 import Phaser from 'phaser';
 
 export default class Actor extends Phaser.Physics.Arcade.Sprite {
+  private static readonly SCALE_X_POSITIVE = 0.1;
+  private static readonly SCALE_X_NEGATIVE = -0.1;
 
   constructor(
     scene: Phaser.Scene,
@@ -16,9 +18,9 @@ export default class Actor extends Phaser.Physics.Arcade.Sprite {
 
   checkFlip() {
     if (this.body && this.body.velocity.x < 0) {
-      this.scaleX = -0.1;
+      this.scaleX = Actor.SCALE_X_NEGATIVE;
     } else {
-      this.scaleX = 0.1;
+      this.scaleX = Actor.SCALE_X_POSITIVE;
     }
   }
 

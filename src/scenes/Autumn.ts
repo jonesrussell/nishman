@@ -3,18 +3,19 @@ import Player from '../classes/Player';
 import Actor from '../classes/Actor';
 import DialogManager from '../plugins/DialogManager/DialogManager';
 
-const DISTANCE_TO_OPEN_DIALOG = 50;
-const PLAYER_SCALE = 0.1;
-const ELDER_SCALE = 0.1;
-const DIALOG_X_POSITION = 400;
-const DIALOG_Y_POSITION = 300;
-
 export default class Autumn extends Phaser.Scene {
     player: Player;
     elder: Actor;
     talky: DialogManager;
     shouldOpenDialog: boolean = false; // Flag to track if the dialog should be opened
     dialogOpened: boolean = false; // Flag to track if the dialog has already been opened
+
+    private static readonly DISTANCE_TO_OPEN_DIALOG = 50;
+    private static readonly PLAYER_SCALE = 0.1;
+    private static readonly ELDER_SCALE = 0.1;
+    private static readonly DIALOG_X_POSITION = 400;
+    private static readonly DIALOG_Y_POSITION = 300;
+    private static readonly DIALOG_OPTIONS = ['Good', 'Bad'];
 
     constructor() {
         super({ key: 'Autumn' });
@@ -50,10 +51,10 @@ export default class Autumn extends Phaser.Scene {
         }
 
         this.player = new Player(this, 100, 100);
-        this.player.setScale(PLAYER_SCALE);
+        this.player.setScale(Autumn.PLAYER_SCALE);
 
         this.elder = new Actor(this, 650, 500, 'elder', null);
-        this.elder.setScale(ELDER_SCALE);
+        this.elder.setScale(Autumn.ELDER_SCALE);
 
         this.talky = this.plugins.get('talky') as DialogManager;
         this.talky.setScene(this, this.sys.rexUI);
@@ -68,7 +69,7 @@ export default class Autumn extends Phaser.Scene {
 
         // Check if player is close enough to Elder to start dialogue
         const distanceToElder = Phaser.Math.Distance.BetweenPoints(this.player, this.elder);
-        if (distanceToElder < DISTANCE_TO_OPEN_DIALOG && !this.dialogOpened) {
+        if (distanceToElder < Autumn.DISTANCE_TO_OPEN_DIALOG && !this.dialogOpened) {
             this.elder.update();
             this.shouldOpenDialog = true;
         }
@@ -83,11 +84,11 @@ export default class Autumn extends Phaser.Scene {
 
             // Then use dialogData to create the dialog
             this.talky.dialogCreator.createDialog(
-                DIALOG_X_POSITION,
-                DIALOG_Y_POSITION,
+                Autumn.DIALOG_X_POSITION,
+                Autumn.DIALOG_Y_POSITION,
                 dialogData.speaker,
                 this.talky.dialogData.processText(dialogData.text),
-                ['Good', 'Bad'],
+                Autumn.DIALOG_OPTIONS,
             );
             this.shouldOpenDialog = false; // Reset the flag
             this.dialogOpened = true; // Set the dialog opened flag to true
