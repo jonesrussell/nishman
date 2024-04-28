@@ -3,6 +3,7 @@ import Actor from './Actor';
 export default class Player extends Actor {
   target: Phaser.Math.Vector2;
   distanceText: Phaser.GameObjects.Text;
+  inputEnabled: boolean = true; // Flag to track input events
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, 'player', null);
@@ -22,8 +23,11 @@ export default class Player extends Actor {
     this.distanceText = this.scene.add.text(10, 10, 'Click to set target', { color: '#00ff00' });
 
     this.scene.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
-      this.target.x = pointer.x;
-      this.target.y = pointer.y;
+      if (this.inputEnabled) {
+        console.log('player walk');
+        this.target.x = pointer.x;
+        this.target.y = pointer.y;
+      }
 
       // Move at 200 px/s:
       this.scene.physics.moveToObject(this, this.target, 200);
@@ -43,5 +47,9 @@ export default class Player extends Actor {
         this.body.reset(this.target.x, this.target.y);
       }
     }
+  }
+
+  setInputEnabled(enabled: boolean) {
+    this.inputEnabled = enabled;
   }
 }

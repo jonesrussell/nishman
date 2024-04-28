@@ -1,9 +1,11 @@
 import { Scene } from 'phaser';
+import Dialog from 'phaser3-rex-plugins/templates/ui/dialog/Dialog';
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 
 export default class DialogCreator {
   scene: Scene;
   rexUI: RexUIPlugin;
+  dialog: Dialog;
 
   setScene(scene: Scene, rexUI: RexUIPlugin) {
     this.scene = scene;
@@ -17,7 +19,7 @@ export default class DialogCreator {
     content: string,
     answers: string[] = [],
   ) {
-    let dialog = this.rexUI.add.dialog({
+    this.dialog = this.rexUI.add.dialog({
       x: x,
       y: y,
       background: this.rexUI.add.roundRectangle(0, 0, 100, 100, 20, 0x1565c0),
@@ -54,9 +56,10 @@ export default class DialogCreator {
       }
     }).layout().popUp(1000);
 
-    dialog
-      .on('button.click', function (button: Phaser.GameObjects.Text, _groupName: string, index: number) {
+    this.dialog
+      .on('button.click', (button: Phaser.GameObjects.Text, _groupName: string, index: number, _event: Event) => {
         console.log(index + ': ' + button.text);
+        this.dialog.destroy(); // Close and remove the dialog
       })
       .on('button.over', function (button: Phaser.GameObjects.GameObject, _groupName: string, _index: number) {
         if (button instanceof Phaser.GameObjects.GameObject) {
@@ -69,7 +72,6 @@ export default class DialogCreator {
         }
       });
   }
-
 
   createLabel(text: string) {
     return this.rexUI.add.label({
@@ -85,5 +87,4 @@ export default class DialogCreator {
       }
     });
   }
-
 }

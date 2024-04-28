@@ -78,6 +78,9 @@ export default class Autumn extends Phaser.Scene {
             // Assuming talky.getDialogue(key) returns the dialogue data
             const dialogData = this.talky.dialogData.getDialogueById(1);
 
+            // Disable touch events while the dialog is open
+            this.player.setInputEnabled(false);
+
             // Then use dialogData to create the dialog
             this.talky.dialogCreator.createDialog(
                 DIALOG_X_POSITION,
@@ -88,6 +91,11 @@ export default class Autumn extends Phaser.Scene {
             );
             this.shouldOpenDialog = false; // Reset the flag
             this.dialogOpened = true; // Set the dialog opened flag to true
+
+            // Re-enable input events when the dialog is closed
+            this.talky.dialogCreator.dialog.on('destroy', () => {
+                this.player.setInputEnabled(true);
+            });
         }
     }
 
