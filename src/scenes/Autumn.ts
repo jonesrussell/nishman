@@ -25,8 +25,9 @@ export default class Autumn extends Phaser.Scene {
      * preload method of the Play scene
      */
     preload() {
-        this.load.tilemapCSV('map', 'assets/tilemaps/csv/bg.csv');
-        this.load.image('tiles', 'assets/tilemaps/tiles/seasonal_sample_autumn.png');
+        this.load.tilemapCSV('mapBase', 'assets/tilemaps/level01_forest_Base.csv');
+        this.load.tilemapCSV('mapEnv', 'assets/tilemaps/level01_forest_Env.csv');
+        this.load.image('tiles', 'assets/tilemaps/Overworld.png');
 
         this.load.spritesheet('player', 'assets/sprites/gen-char.png', { frameWidth: 256, frameHeight: 256 });
         this.load.spritesheet('elder', 'assets/sprites/gen-char.png', { frameWidth: 256, frameHeight: 256 });
@@ -39,22 +40,23 @@ export default class Autumn extends Phaser.Scene {
      */
     create() {
         // When loading a CSV map, make sure to specify the tileWidth and tileHeight
-        const map = this.make.tilemap({ key: 'map', tileWidth: 16, tileHeight: 16 });
-        const tileset = map.addTilesetImage('tiles');
-        if (tileset) {
-            const layer = map.createLayer(0, tileset, 0, 0); // layer index, tileset, x, y
-            if (layer) {
-                layer.skipCull = true;
-            }
-        } else {
-            console.error('Tileset not found');
-        }
+        const mapBase = this.make.tilemap({ key: 'mapBase', tileWidth: 16, tileHeight: 16 });
+        const tilesetBase = mapBase.addTilesetImage('tiles');
+        const layerBase = mapBase.createLayer(0, tilesetBase, 0, 0);
+        layerBase.skipCull = true;
+    
+        const mapEnv = this.make.tilemap({ key: 'mapEnv', tileWidth: 16, tileHeight: 16 });
+        const tilesetEnv = mapEnv.addTilesetImage('tiles');
+        const layerEnv = mapEnv.createLayer(0, tilesetEnv, 0, 0);
+        layerEnv.setDepth(1); // Ensure it renders above the base layer
 
-        this.player = new Player(this, 100, 100);
+        this.player = new Player(this, 100, 650);
         this.player.setScale(Autumn.PLAYER_SCALE);
+        this.player.setDepth(2);
 
-        this.elder = new Actor(this, 650, 500, 'elder', null);
+        this.elder = new Actor(this, 950, 300, 'elder', null);
         this.elder.setScale(Autumn.ELDER_SCALE);
+        this.elder.setDepth(2);
 
         this.talky = this.plugins.get('talky') as DialogManager;
         this.talky.setScene(this, this.sys.rexUI);
@@ -90,6 +92,9 @@ export default class Autumn extends Phaser.Scene {
                 this.talky.dialogData.processText(dialogData.text),
                 Autumn.DIALOG_OPTIONS,
             );
+
+            this.talky.dialogCreator.dialog.setDepth(3);
+            
             this.shouldOpenDialog = false; // Reset the flag
             this.dialogOpened = true; // Set the dialog opened flag to true
 
