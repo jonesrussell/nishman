@@ -13,8 +13,8 @@ export default class Autumn extends Phaser.Scene {
     private static readonly DISTANCE_TO_OPEN_DIALOG = 50;
     private static readonly PLAYER_SCALE = 0.1;
     private static readonly ELDER_SCALE = 0.1;
-    private static readonly DIALOG_X_POSITION = 400;
-    private static readonly DIALOG_Y_POSITION = 300;
+    private static readonly DIALOG_X_POSITION = 1280 / 2;
+    private static readonly DIALOG_Y_POSITION = 720 / 2;
     private static readonly DIALOG_OPTIONS = ['Good', 'Bad'];
 
     constructor() {
