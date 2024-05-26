@@ -4,8 +4,8 @@ import Phaser from 'phaser';
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin';
 import DialogManager from './plugins/DialogManager/DialogManager';
 
-const GAME_WIDTH = 800;
-const GAME_HEIGHT = 600;
+const GAME_WIDTH = 1280;
+const GAME_HEIGHT = 720;
 const BACKGROUND_COLOR = '#192a56';
 const PIXEL_ART = true;
 const SCALE_MODE = Phaser.Scale.FIT;

@@ -28,13 +28,13 @@ export default class TitleScreen extends Scene {
   }
 
   createTitleText() {
-    const titleText: StatesBitmapText = this.add.bitmapText(400, 150, 'arcade', 'Anishinaabe', 32);
+    const titleText: StatesBitmapText = this.add.bitmapText(1280/2, 720/2 - 160, 'arcade', 'Anishinaabe', 32);
     titleText.setTint(0xff0000); // Red tint
     titleText.setOrigin(0.5);
   }
 
   createStartButton() {
-    const startButton = this.add.bitmapText(400, 220, 'arcade', 'Start Game', 16);
+    const startButton = this.add.bitmapText(1280/2, 720/2-80, 'arcade', 'Start Game', 16);
     startButton.setOrigin(0.5);
     startButton.setInteractive();
     startButton.setTint(0x0000ff); // Blue tint
