@@ -15,7 +15,7 @@ export default class Autumn extends Phaser.Scene {
     private static readonly ELDER_SCALE = 0.1;
     private static readonly DIALOG_X_POSITION = 1280 / 2;
     private static readonly DIALOG_Y_POSITION = 720 / 2;
-    private static readonly DIALOG_OPTIONS = ['Good', 'Bad'];
+    private static readonly DIALOG_OPTIONS = ['Ahnii!', 'Aw-knee??'];
 
     constructor() {
         super({ key: 'Autumn' });
@@ -44,7 +44,7 @@ export default class Autumn extends Phaser.Scene {
         const tilesetBase = mapBase.addTilesetImage('tiles');
         const layerBase = mapBase.createLayer(0, tilesetBase, 0, 0);
         layerBase.skipCull = true;
-    
+
         const mapEnv = this.make.tilemap({ key: 'mapEnv', tileWidth: 16, tileHeight: 16 });
         const tilesetEnv = mapEnv.addTilesetImage('tiles');
         const layerEnv = mapEnv.createLayer(0, tilesetEnv, 0, 0);
@@ -94,7 +94,7 @@ export default class Autumn extends Phaser.Scene {
             );
 
             this.talky.dialogCreator.dialog.setDepth(3);
-            
+
             this.shouldOpenDialog = false; // Reset the flag
             this.dialogOpened = true; // Set the dialog opened flag to true
 
