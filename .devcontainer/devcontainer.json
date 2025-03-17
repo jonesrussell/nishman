@@ -7,7 +7,7 @@
 	"features": {
 		"ghcr.io/kreemer/features/chrometesting:1": {},
 		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
-		"ghcr.io/mikaello/devcontainer-features/modern-shell-utils:1": {}
+		"ghcr.io/mikaello/devcontainer-features/modern-shell-utils:2": {}
 	},
 	"customizations": {
 		"vscode": {
